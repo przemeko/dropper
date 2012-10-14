@@ -8,14 +8,18 @@ class HelloWorld : public cocos2d::CCLayer
 {
 private:
     CCSize winSize;
+    
     CCSprite * hero;
     CCPoint position;
+    CCPoint velocity;
+    
     CCPoint blockPosition;
     CCSprite *block;
     CCMutableArray<CCSprite *> *blocks;
     unsigned int blocksNum;
     CCSpriteBatchNode *blockBatchNode;
     int nextBlockIndex;
+    
     bool isCollide;
     
     void ccTouchesEnded(CCSet *touches, CCEvent *event);

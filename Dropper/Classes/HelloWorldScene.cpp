@@ -34,6 +34,7 @@ bool HelloWorld::init()
     winSize = CCDirector::sharedDirector()->getWinSize();
 	
     this->isCollide = false;
+    this->velocity = ccp(0,-10);
     this->hero = CCSprite::spriteWithFile("front2.png");
     this->addChild(this->hero);
     this->hero->setPosition(ccp(winSize.width/2,winSize.height));
@@ -88,7 +89,6 @@ void HelloWorld::update(ccTime dt)
 {
     position = hero->getPosition();
     
-    
     for (int i = 0; i<this->nextBlockIndex; i++) {
         block = this->blocks->getObjectAtIndex(i);
         blockPosition = block->getPosition();
@@ -96,13 +96,13 @@ void HelloWorld::update(ccTime dt)
         
         if (fabs(position.x - blockPosition.x) <= 16 && fabs(position.y - blockPosition.y) <= 16) {
             isCollide = true;
+            velocity.y = -50;
             break;
         }
     }
     
-    if (!isCollide) {
-        position.y -= 1;
-    }
+    velocity.y -= -1;
+    position.y -= velocity.y*dt;
     
     hero->setPosition(position);
 }
