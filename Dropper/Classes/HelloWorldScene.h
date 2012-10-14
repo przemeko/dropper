@@ -2,9 +2,26 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
+using namespace cocos2d;
 
 class HelloWorld : public cocos2d::CCLayer
 {
+private:
+    CCSize winSize;
+    CCSprite * hero;
+    CCPoint position;
+    CCPoint blockPosition;
+    CCSprite *block;
+    CCMutableArray<CCSprite *> *blocks;
+    unsigned int blocksNum;
+    CCSpriteBatchNode *blockBatchNode;
+    int nextBlockIndex;
+    bool isCollide;
+    
+    void ccTouchesEnded(CCSet *touches, CCEvent *event);
+    void update(ccTime dt);
+    void addBlock(CCPoint location);
+    
 public:
 	// Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
 	virtual bool init();  

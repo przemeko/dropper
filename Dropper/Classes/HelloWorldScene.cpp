@@ -28,50 +28,83 @@ bool HelloWorld::init()
 	{
 		return false;
 	}
-
-	/////////////////////////////
-	// 2. add a menu item with "X" image, which is clicked to quit the program
-	//    you may modify it.
-
-	// add a "close" icon to exit the progress. it's an autorelease object
-	CCMenuItemImage *pCloseItem = CCMenuItemImage::itemFromNormalImage(
-										"CloseNormal.png",
-										"CloseSelected.png",
-										this,
-										menu_selector(HelloWorld::menuCloseCallback) );
-	pCloseItem->setPosition( ccp(CCDirector::sharedDirector()->getWinSize().width - 20, 20) );
-
-	// create menu, it's an autorelease object
-	CCMenu* pMenu = CCMenu::menuWithItems(pCloseItem, NULL);
-	pMenu->setPosition( CCPointZero );
-	this->addChild(pMenu, 1);
-
-	/////////////////////////////
-	// 3. add your codes below...
-
-	// add a label shows "Hello World"
-	// create and initialize a label
-	CCLabelTTF* pLabel = CCLabelTTF::labelWithString("Hello World", "Thonburi", 34);
-
-	// ask director the window size
-	CCSize size = CCDirector::sharedDirector()->getWinSize();
-
-	// position the label on the center of the screen
-	pLabel->setPosition( ccp(size.width / 2, size.height - 20) );
-
-	// add the label as a child to this layer
-	this->addChild(pLabel, 1);
-
-	// add "HelloWorld" splash screen"
-	CCSprite* pSprite = CCSprite::spriteWithFile("HelloWorld.png");
-
-	// position the sprite on the center of the screen
-	pSprite->setPosition( ccp(size.width/2, size.height/2) );
-
-	// add the sprite as a child to this layer
-	this->addChild(pSprite, 0);
+    
+    this->setIsTouchEnabled(true);
+    
+    winSize = CCDirector::sharedDirector()->getWinSize();
 	
+    this->isCollide = false;
+    this->hero = CCSprite::spriteWithFile("front2.png");
+    this->addChild(this->hero);
+    this->hero->setPosition(ccp(winSize.width/2,winSize.height));
+    
+    this->blockBatchNode = CCSpriteBatchNode::batchNodeWithFile("block2.png");
+    this->addChild(this->blockBatchNode);
+    
+    this->nextBlockIndex = 0;
+    this->blocksNum = 10;
+    this->blocks = new CCMutableArray<CCSprite *>();
+    
+    for (int i =0; i<this->blocksNum; i++) {
+        block = CCSprite::spriteWithTexture(this->blockBatchNode->getTexture());
+        block->setIsVisible(false);
+        
+        this->blocks->addObject(this->block);
+        this->blockBatchNode->addChild(block);
+    }
+
+    scheduleUpdate();
 	return true;
+}
+
+void HelloWorld::ccTouchesEnded(CCSet *touches, CCEvent *event)
+{
+    CCSetIterator iterator;
+    CCTouch *touch;
+    iterator = touches->begin();
+    
+    touch = (CCTouch*)(*iterator);
+    
+    if (touch) {
+        CCPoint location = touch->locationInView(touch->view());
+        location = CCDirector::sharedDirector()->convertToGL(location);
+        addBlock(location);
+    }
+
+}
+
+void HelloWorld::addBlock(CCPoint location)
+{
+    if (this->nextBlockIndex >= this->blocksNum) {
+        return;
+    }
+    
+    block = this->blocks->getObjectAtIndex(this->nextBlockIndex++);
+    block->setPosition(location);
+    block->setIsVisible(true);
+}
+
+void HelloWorld::update(ccTime dt)
+{
+    position = hero->getPosition();
+    
+    
+    for (int i = 0; i<this->nextBlockIndex; i++) {
+        block = this->blocks->getObjectAtIndex(i);
+        blockPosition = block->getPosition();
+        isCollide = false;
+        
+        if (fabs(position.x - blockPosition.x) <= 16 && fabs(position.y - blockPosition.y) <= 16) {
+            isCollide = true;
+            break;
+        }
+    }
+    
+    if (!isCollide) {
+        position.y -= 1;
+    }
+    
+    hero->setPosition(position);
 }
 
 void HelloWorld::menuCloseCallback(CCObject* pSender)
