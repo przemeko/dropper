@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		71026775162C896600E43ED7 /* coin2.png in Resources */ = {isa = PBXBuildFile; fileRef = 71026774162C896600E43ED7 /* coin2.png */; };
 		7139CE4B1629DE6D0017C391 /* block2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7139CE4A1629DE6D0017C391 /* block2.png */; };
 		7139CE4D1629DE800017C391 /* front2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7139CE4C1629DE800017C391 /* front2.png */; };
 		7139CE4F1629E4480017C391 /* lunch-logo-320x240.png in Resources */ = {isa = PBXBuildFile; fileRef = 7139CE4E1629E4480017C391 /* lunch-logo-320x240.png */; };
@@ -147,6 +148,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		71026774162C896600E43ED7 /* coin2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coin2.png; sourceTree = "<group>"; };
 		7139CE4A1629DE6D0017C391 /* block2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = block2.png; sourceTree = "<group>"; };
 		7139CE4C1629DE800017C391 /* front2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = front2.png; sourceTree = "<group>"; };
 		7139CE4E1629E4480017C391 /* lunch-logo-320x240.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lunch-logo-320x240.png"; sourceTree = "<group>"; };
@@ -498,6 +500,7 @@
 		71EE98DF162374AD00099652 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				71026774162C896600E43ED7 /* coin2.png */,
 				7139CE4E1629E4480017C391 /* lunch-logo-320x240.png */,
 				7139CE4C1629DE800017C391 /* front2.png */,
 				7139CE4A1629DE6D0017C391 /* block2.png */,
@@ -1099,6 +1102,7 @@
 				7139CE4D1629DE800017C391 /* front2.png in Resources */,
 				7139CE4F1629E4480017C391 /* lunch-logo-320x240.png in Resources */,
 				7139CE511629E4810017C391 /* Default.png in Resources */,
+				71026775162C896600E43ED7 /* coin2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

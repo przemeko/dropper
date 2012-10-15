@@ -13,15 +13,27 @@ private:
     CCPoint position;
     CCPoint velocity;
     
+    int lastBlockContact;
+    int currentBlockContact;
+    unsigned int jumpsNum;
+    
+    CCMutableArray<CCSprite *> *gems;
+    unsigned int gemsNum;
+    
     CCPoint blockPosition;
-    CCSprite *block;
     CCMutableArray<CCSprite *> *blocks;
     unsigned int blocksNum;
     CCSpriteBatchNode *blockBatchNode;
     int nextBlockIndex;
     
     bool isCollide;
+    CCSprite *block;
     
+    void initHero();
+    void initBlocks();
+    void initGems();
+    
+    void didAccelerate(CCAcceleration* pAccelerationValue);
     void ccTouchesEnded(CCSet *touches, CCEvent *event);
     void update(ccTime dt);
     void addBlock(CCPoint location);

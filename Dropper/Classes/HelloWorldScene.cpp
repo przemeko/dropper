@@ -30,21 +30,40 @@ bool HelloWorld::init()
 	}
     
     this->setIsTouchEnabled(true);
+    this->setIsAccelerometerEnabled(true);
     
     winSize = CCDirector::sharedDirector()->getWinSize();
 	
+    initHero();
+    initBlocks();
+    initGems();
+    scheduleUpdate();
+    
+    CCLog("!!! ___ Dropper test ___");
+    
+	return true;
+}
+void HelloWorld::initHero()
+{
     this->isCollide = false;
     this->velocity = ccp(0,-10);
     this->hero = CCSprite::spriteWithFile("front2.png");
     this->addChild(this->hero);
     this->hero->setPosition(ccp(winSize.width/2,winSize.height));
     
+    this->lastBlockContact = 0;
+    this->currentBlockContact = 0;
+    this->jumpsNum = 0;
+}
+
+void HelloWorld::initBlocks()
+{
+    this->nextBlockIndex = 0;
+    this->blocksNum = 50;
+    this->blocks = new CCMutableArray<CCSprite *>();
+    
     this->blockBatchNode = CCSpriteBatchNode::batchNodeWithFile("block2.png");
     this->addChild(this->blockBatchNode);
-    
-    this->nextBlockIndex = 0;
-    this->blocksNum = 10;
-    this->blocks = new CCMutableArray<CCSprite *>();
     
     for (int i =0; i<this->blocksNum; i++) {
         block = CCSprite::spriteWithTexture(this->blockBatchNode->getTexture());
@@ -52,10 +71,25 @@ bool HelloWorld::init()
         
         this->blocks->addObject(this->block);
         this->blockBatchNode->addChild(block);
-    }
+    } 
+}
 
-    scheduleUpdate();
-	return true;
+void HelloWorld::initGems()
+{
+    this->gemsNum = 20;
+    this->gems = new CCMutableArray<CCSprite *>();
+    
+    CCSpriteBatchNode* gemsBatchNode = CCSpriteBatchNode::batchNodeWithFile("coin2.png");
+    this->addChild(gemsBatchNode);
+
+    for (int i =0; i<this->gemsNum; i++) {
+        block = CCSprite::spriteWithTexture(gemsBatchNode->getTexture());
+        block->setIsVisible(true);
+        block->setPosition(ccp(winSize.width*CCRANDOM_0_1(), (winSize.height-50)*CCRANDOM_0_1()));
+        this->gems->addObject(block);
+        gemsBatchNode->addChild(block);
+    } 
+    
 }
 
 void HelloWorld::ccTouchesEnded(CCSet *touches, CCEvent *event)
@@ -72,6 +106,11 @@ void HelloWorld::ccTouchesEnded(CCSet *touches, CCEvent *event)
         addBlock(location);
     }
 
+}
+
+void HelloWorld::didAccelerate(CCAcceleration *pAccelerationValue)
+{
+	velocity.x = pAccelerationValue->x * 60.0f;
 }
 
 void HelloWorld::addBlock(CCPoint location)
@@ -96,13 +135,51 @@ void HelloWorld::update(ccTime dt)
         
         if (fabs(position.x - blockPosition.x) <= 16 && fabs(position.y - blockPosition.y) <= 16) {
             isCollide = true;
-            velocity.y = -50;
+            CCLog("jumpsNum %d, %d", jumpsNum, i);
+            if (currentBlockContact == i) {
+                jumpsNum++;
+            }
+            else {
+                jumpsNum = 0;
+            }
+            
+            if (jumpsNum >= 3) {
+                velocity.y = -100; // impact
+                jumpsNum = 0;
+            }else {
+                velocity.y = -50; // impact
+            }
+            
+            velocity.x = 0;
+            currentBlockContact = i;
             break;
         }
     }
     
-    velocity.y -= -1;
+    for (int i = 0; i<this->gemsNum; i++) {
+        block = this->gems->getObjectAtIndex(i);
+        if (block->getIsVisible()) {
+            blockPosition = block->getPosition();
+            if (fabs(position.x - blockPosition.x) <= 16 && fabs(position.y - blockPosition.y) <= 16) {
+                block->setIsVisible(false);
+            }
+        }
+        
+    }
+    
+    if (position.y <= 0) {
+        velocity.y = -50; // impact
+        velocity.x = 0;
+    }
+    
+    velocity.y -= -2.0f;
+    position.x += velocity.x*dt;
     position.y -= velocity.y*dt;
+    
+    // add velocity boundry
+    if (velocity.y < -50) {
+        //velocity.y = -50;
+    }
     
     hero->setPosition(position);
 }
