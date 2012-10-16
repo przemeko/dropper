@@ -32,9 +32,11 @@ private:
     void initHero();
     void initBlocks();
     void initGems();
+    void initDebug();
     
     void didAccelerate(CCAcceleration* pAccelerationValue);
     void ccTouchesEnded(CCSet *touches, CCEvent *event);
+    virtual void keyBackClicked();
     void update(ccTime dt);
     void addBlock(CCPoint location);
     

@@ -31,15 +31,15 @@ bool HelloWorld::init()
     
     this->setIsTouchEnabled(true);
     this->setIsAccelerometerEnabled(true);
+    this->setIsKeypadEnabled(true);
     
     winSize = CCDirector::sharedDirector()->getWinSize();
-	
+    
     initHero();
     initBlocks();
     initGems();
+    initDebug();
     scheduleUpdate();
-    
-    CCLog("!!! ___ Dropper test ___");
     
 	return true;
 }
@@ -92,6 +92,18 @@ void HelloWorld::initGems()
     
 }
 
+void HelloWorld::initDebug()
+{
+    // display info about compilation time
+    time_t pt;
+    time (&pt);
+    char* tm= ctime (&pt);
+    sprintf(tm, "%s", tm);    
+    CCLabelTTF * label = CCLabelTTF::labelWithString(tm, "Arial", 10);
+    label->setPosition(ccp(winSize.width/2, winSize.height - 10));
+    this->addChild(label);
+    
+}
 void HelloWorld::ccTouchesEnded(CCSet *touches, CCEvent *event)
 {
     CCSetIterator iterator;
@@ -182,6 +194,11 @@ void HelloWorld::update(ccTime dt)
     }
     
     hero->setPosition(position);
+}
+
+void HelloWorld::keyBackClicked() 
+{
+    CCDirector::sharedDirector()->end();
 }
 
 void HelloWorld::menuCloseCallback(CCObject* pSender)
