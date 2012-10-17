@@ -26,13 +26,19 @@ private:
     CCSpriteBatchNode *blockBatchNode;
     int nextBlockIndex;
     
+    CCMutableArray<CCSprite *> *enemies;
+    unsigned int enemiesNum;
+    CCPoint enemyPosition;
+    
     bool isCollide;
     CCSprite *block;
     
     void initHero();
     void initBlocks();
     void initGems();
+    void initEnemies();
     void initDebug();
+    void clean();
     
     void didAccelerate(CCAcceleration* pAccelerationValue);
     void ccTouchesEnded(CCSet *touches, CCEvent *event);

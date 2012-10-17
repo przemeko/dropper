@@ -12,6 +12,9 @@
 		7139CE4D1629DE800017C391 /* front2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7139CE4C1629DE800017C391 /* front2.png */; };
 		7139CE4F1629E4480017C391 /* lunch-logo-320x240.png in Resources */ = {isa = PBXBuildFile; fileRef = 7139CE4E1629E4480017C391 /* lunch-logo-320x240.png */; };
 		7139CE511629E4810017C391 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 7139CE501629E4810017C391 /* Default.png */; };
+		719F56EE162F3136008221F3 /* fly_fly2.png in Resources */ = {isa = PBXBuildFile; fileRef = 719F56ED162F3136008221F3 /* fly_fly2.png */; };
+		719F56F1162F48FA008221F3 /* spritesheet.plist in Resources */ = {isa = PBXBuildFile; fileRef = 719F56EF162F48FA008221F3 /* spritesheet.plist */; };
+		719F56F2162F48FA008221F3 /* spritesheet.png in Resources */ = {isa = PBXBuildFile; fileRef = 719F56F0162F48FA008221F3 /* spritesheet.png */; };
 		71EE98CF162374AD00099652 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71EE98CE162374AD00099652 /* QuartzCore.framework */; };
 		71EE98D1162374AD00099652 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71EE98D0162374AD00099652 /* OpenGLES.framework */; };
 		71EE98D3162374AD00099652 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71EE98D2162374AD00099652 /* OpenAL.framework */; };
@@ -153,6 +156,9 @@
 		7139CE4C1629DE800017C391 /* front2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = front2.png; sourceTree = "<group>"; };
 		7139CE4E1629E4480017C391 /* lunch-logo-320x240.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lunch-logo-320x240.png"; sourceTree = "<group>"; };
 		7139CE501629E4810017C391 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		719F56ED162F3136008221F3 /* fly_fly2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fly_fly2.png; sourceTree = "<group>"; };
+		719F56EF162F48FA008221F3 /* spritesheet.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = spritesheet.plist; sourceTree = "<group>"; };
+		719F56F0162F48FA008221F3 /* spritesheet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spritesheet.png; sourceTree = "<group>"; };
 		71EE98CA162374AD00099652 /* Dropper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dropper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71EE98CE162374AD00099652 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		71EE98D0162374AD00099652 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -500,6 +506,9 @@
 		71EE98DF162374AD00099652 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				719F56EF162F48FA008221F3 /* spritesheet.plist */,
+				719F56F0162F48FA008221F3 /* spritesheet.png */,
+				719F56ED162F3136008221F3 /* fly_fly2.png */,
 				71026774162C896600E43ED7 /* coin2.png */,
 				7139CE4E1629E4480017C391 /* lunch-logo-320x240.png */,
 				7139CE4C1629DE800017C391 /* front2.png */,
@@ -1103,6 +1112,9 @@
 				7139CE4F1629E4480017C391 /* lunch-logo-320x240.png in Resources */,
 				7139CE511629E4810017C391 /* Default.png in Resources */,
 				71026775162C896600E43ED7 /* coin2.png in Resources */,
+				719F56EE162F3136008221F3 /* fly_fly2.png in Resources */,
+				719F56F1162F48FA008221F3 /* spritesheet.plist in Resources */,
+				719F56F2162F48FA008221F3 /* spritesheet.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -35,9 +35,22 @@ bool HelloWorld::init()
     
     winSize = CCDirector::sharedDirector()->getWinSize();
     
+    /*
+    // Get sprite sheet
+    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("spritesheet.plist");
+    
+    // Get background from sprite sheet
+    CCSprite * background = CCSprite::spriteWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("background.png"));
+    this->addChild(background);
+    
+    // Center the background on the screen
+    background->setPosition(ccp(winSize.width/2, winSize.height/2));	// center it
+    */
+    
     initHero();
     initBlocks();
     initGems();
+    initEnemies();
     initDebug();
     scheduleUpdate();
     
@@ -92,6 +105,25 @@ void HelloWorld::initGems()
     
 }
 
+void HelloWorld::initEnemies()
+{
+    this->enemiesNum = 2;
+    this->enemies = new CCMutableArray<CCSprite *>();
+    
+    CCSpriteBatchNode* gemsBatchNode = CCSpriteBatchNode::batchNodeWithFile("fly_fly2.png");
+    
+    this->addChild(gemsBatchNode);
+    
+    for (int i =0; i<this->enemiesNum; i++) {
+        block = CCSprite::spriteWithTexture(gemsBatchNode->getTexture());
+        block->setIsVisible(true);
+        block->setPosition(ccp(-16, (winSize.height-50)*CCRANDOM_0_1()));
+        this->enemies->addObject(block);
+        gemsBatchNode->addChild(block);
+    } 
+    
+}
+
 void HelloWorld::initDebug()
 {
     // display info about compilation time
@@ -140,31 +172,33 @@ void HelloWorld::update(ccTime dt)
 {
     position = hero->getPosition();
     
-    for (int i = 0; i<this->nextBlockIndex; i++) {
+    for (int i = 0; i<this->blocksNum; i++) {
         block = this->blocks->getObjectAtIndex(i);
-        blockPosition = block->getPosition();
-        isCollide = false;
+        if (block->getIsVisible()) {
+            blockPosition = block->getPosition();
+            isCollide = false;
         
-        if (fabs(position.x - blockPosition.x) <= 16 && fabs(position.y - blockPosition.y) <= 16) {
-            isCollide = true;
-            CCLog("jumpsNum %d, %d", jumpsNum, i);
-            if (currentBlockContact == i) {
-                jumpsNum++;
-            }
-            else {
-                jumpsNum = 0;
-            }
+            if (fabs(position.x - blockPosition.x) <= 16 && fabs(position.y - blockPosition.y) <= 16) {
+                isCollide = true;
+                //CCLog("jumpsNum %d, %d", jumpsNum, i);
+                if (currentBlockContact == i) {
+                    jumpsNum++;
+                }
+                else {
+                    jumpsNum = 0;
+                }
             
-            if (jumpsNum >= 3) {
-                velocity.y = -100; // impact
-                jumpsNum = 0;
-            }else {
-                velocity.y = -50; // impact
-            }
+                if (jumpsNum >= 3) {
+                    velocity.y = -100; // impact
+                    jumpsNum = 0;
+                }else {
+                    velocity.y = -50; // impact
+                }
             
-            velocity.x = 0;
-            currentBlockContact = i;
-            break;
+                velocity.x = 0;
+                currentBlockContact = i;
+            //break;
+        }
         }
     }
     
@@ -175,6 +209,23 @@ void HelloWorld::update(ccTime dt)
             if (fabs(position.x - blockPosition.x) <= 16 && fabs(position.y - blockPosition.y) <= 16) {
                 block->setIsVisible(false);
             }
+        }
+
+        block->setPosition(blockPosition);
+    }
+    
+    for (int i = 0; i<this->enemiesNum; i++) {
+        block = this->enemies->getObjectAtIndex(i);
+        enemyPosition = block->getPosition();
+        if (enemyPosition.x > winSize.width + 16) {
+            enemyPosition.x = -16;
+        }
+        enemyPosition.x += 20*dt;
+        block->setPosition(enemyPosition);
+        
+        //collide with hero?
+        if (fabs(position.x - enemyPosition.x) <= 32 && fabs(position.y - enemyPosition.y) <= 16) {
+            CCLog("hero collide");
         }
         
     }
@@ -196,13 +247,21 @@ void HelloWorld::update(ccTime dt)
     hero->setPosition(position);
 }
 
+void HelloWorld::clean()
+{
+    delete this->gems;
+    delete this->enemies;
+}
+
 void HelloWorld::keyBackClicked() 
 {
+    clean();
     CCDirector::sharedDirector()->end();
 }
 
 void HelloWorld::menuCloseCallback(CCObject* pSender)
 {
+    clean();
 	CCDirector::sharedDirector()->end();
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
