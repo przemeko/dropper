@@ -1,5 +1,7 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
+#include "Hud.h"
+#include "Entity.h"
 
 using namespace cocos2d;
 using namespace CocosDenshion;
@@ -35,107 +37,85 @@ bool HelloWorld::init()
     
     winSize = CCDirector::sharedDirector()->getWinSize();
     
-    /*
-    // Get sprite sheet
-    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("spritesheet.plist");
+    hud = Hud::node();
+    this->addChild(hud);
     
-    // Get background from sprite sheet
-    CCSprite * background = CCSprite::spriteWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("background.png"));
-    this->addChild(background);
+    gameSpaceSize.width = 600;
+    gameSpaceSize.height = 800;
+    gameSpaceNode = CCNode::node();
+    addChild(gameSpaceNode);
     
-    // Center the background on the screen
-    background->setPosition(ccp(winSize.width/2, winSize.height/2));	// center it
-    */
-    
+    //asasx
+    //gameSpaceNode->setPosition(ccp(10, -100));
     initHero();
-    initBlocks();
+    initPlatforms();
     initGems();
     initEnemies();
-    initDebug();
+    //initDebug();
     scheduleUpdate();
     
 	return true;
 }
-void HelloWorld::initHero()
+
+void HelloWorld::onEnter()
 {
-    this->isCollide = false;
-    this->velocity = ccp(0,-10);
-    this->hero = CCSprite::spriteWithFile("front2.png");
-    this->addChild(this->hero);
-    this->hero->setPosition(ccp(winSize.width/2,winSize.height));
-    
-    this->lastBlockContact = 0;
-    this->currentBlockContact = 0;
-    this->jumpsNum = 0;
+    CCLayer::onEnter();
 }
 
-void HelloWorld::initBlocks()
+void HelloWorld::initHero()
 {
-    this->nextBlockIndex = 0;
-    this->blocksNum = 50;
-    this->blocks = new CCMutableArray<CCSprite *>();
+    this->hero = new Entity("front2.png");
+    this->hero->physics->a.y = -1.2f;
+    this->hero->node->setPosition(ccp(winSize.width/2,winSize.height/2));
+    gameSpaceNode->addChild(hero->node);
+    //this->addChild(this->hero->node);
     
-    this->blockBatchNode = CCSpriteBatchNode::batchNodeWithFile("block2.png");
-    this->addChild(this->blockBatchNode);
+}
+void HelloWorld::initPlatforms()
+{
+    this->platforms = new Group();
     
-    for (int i =0; i<this->blocksNum; i++) {
-        block = CCSprite::spriteWithTexture(this->blockBatchNode->getTexture());
-        block->setIsVisible(false);
-        
-        this->blocks->addObject(this->block);
-        this->blockBatchNode->addChild(block);
-    } 
+    for (int i = 0; i<30; i++) {
+        entity = new Entity("block2.png");
+        entity->node->setIsVisible(false);
+        this->platforms->add(entity);
+        //this->addChild(entity->node);
+        gameSpaceNode->addChild(entity->node);
+    }
 }
 
 void HelloWorld::initGems()
 {
-    this->gemsNum = 20;
-    this->gems = new CCMutableArray<CCSprite *>();
+    this->gems = new Group();
     
-    CCSpriteBatchNode* gemsBatchNode = CCSpriteBatchNode::batchNodeWithFile("coin2.png");
-    this->addChild(gemsBatchNode);
-
-    for (int i =0; i<this->gemsNum; i++) {
-        block = CCSprite::spriteWithTexture(gemsBatchNode->getTexture());
-        block->setIsVisible(true);
-        block->setPosition(ccp(winSize.width*CCRANDOM_0_1(), (winSize.height-50)*CCRANDOM_0_1()));
-        this->gems->addObject(block);
-        gemsBatchNode->addChild(block);
-    } 
-    
+    for (int i = 0; i< 10; i++) {
+        entity = new Entity("coin2.png");
+        this->gems->add(entity);
+        entity->node->setPosition(ccp(winSize.width*CCRANDOM_0_1(), (winSize.height-50)*CCRANDOM_0_1()));
+        //this->addChild(entity->node);
+        gameSpaceNode->addChild(entity->node);
+    }
 }
 
 void HelloWorld::initEnemies()
 {
-    this->enemiesNum = 2;
-    this->enemies = new CCMutableArray<CCSprite *>();
-    
-    CCSpriteBatchNode* gemsBatchNode = CCSpriteBatchNode::batchNodeWithFile("fly_fly2.png");
-    
-    this->addChild(gemsBatchNode);
-    
-    for (int i =0; i<this->enemiesNum; i++) {
-        block = CCSprite::spriteWithTexture(gemsBatchNode->getTexture());
-        block->setIsVisible(true);
-        block->setPosition(ccp(-16, (winSize.height-50)*CCRANDOM_0_1()));
-        this->enemies->addObject(block);
-        gemsBatchNode->addChild(block);
-    } 
-    
+    this->flies = new Group();
+    Entity *fly;
+    for (int i = 0; i<2; i++) {
+        fly = new Entity("fly_fly2.png");
+        //this->addChild(fly->node);
+        gameSpaceNode->addChild(fly->node);
+        fly->node->setPosition(CCPointMake(-10*CCRANDOM_0_1(), CCRANDOM_0_1()*(winSize.height - 50)));
+        fly->physics->v.x = CCRANDOM_0_1()*20;
+        this->flies->add(fly);
+    }
 }
 
 void HelloWorld::initDebug()
 {
-    // display info about compilation time
-    time_t pt;
-    time (&pt);
-    char* tm= ctime (&pt);
-    sprintf(tm, "%s", tm);    
-    CCLabelTTF * label = CCLabelTTF::labelWithString(tm, "Arial", 10);
-    label->setPosition(ccp(winSize.width/2, winSize.height - 10));
-    this->addChild(label);
     
 }
+
 void HelloWorld::ccTouchesEnded(CCSet *touches, CCEvent *event)
 {
     CCSetIterator iterator;
@@ -147,110 +127,71 @@ void HelloWorld::ccTouchesEnded(CCSet *touches, CCEvent *event)
     if (touch) {
         CCPoint location = touch->locationInView(touch->view());
         location = CCDirector::sharedDirector()->convertToGL(location);
-        addBlock(location);
+        addPlatform(location);
     }
 
 }
 
 void HelloWorld::didAccelerate(CCAcceleration *pAccelerationValue)
 {
-	velocity.x = pAccelerationValue->x * 60.0f;
+	this->hero->physics->v.x = pAccelerationValue->x * 60.0f;
 }
 
-void HelloWorld::addBlock(CCPoint location)
+void HelloWorld::addPlatform(CCPoint location)
 {
-    if (this->nextBlockIndex >= this->blocksNum) {
+    if (this->nextBlockIndex >= this->platforms->count()) {
         return;
     }
     
-    block = this->blocks->getObjectAtIndex(this->nextBlockIndex++);
-    block->setPosition(location);
-    block->setIsVisible(true);
+    entity = this->platforms->get()->getObjectAtIndex(this->nextBlockIndex++);
+    entity->node->setPosition(gameSpaceNode->convertToNodeSpace(location));
+    entity->node->setIsVisible(true);
+    
 }
 
 void HelloWorld::update(ccTime dt)
 {
-    position = hero->getPosition();
-    
-    for (int i = 0; i<this->blocksNum; i++) {
-        block = this->blocks->getObjectAtIndex(i);
-        if (block->getIsVisible()) {
-            blockPosition = block->getPosition();
-            isCollide = false;
+    gameSpaceNode->setPosition(ccpAdd(gameSpaceNode->getPosition(), hero->physics->getCalculatedShift()));
         
-            if (fabs(position.x - blockPosition.x) <= 16 && fabs(position.y - blockPosition.y) <= 16) {
-                isCollide = true;
-                //CCLog("jumpsNum %d, %d", jumpsNum, i);
-                if (currentBlockContact == i) {
-                    jumpsNum++;
-                }
-                else {
-                    jumpsNum = 0;
-                }
-            
-                if (jumpsNum >= 3) {
-                    velocity.y = -100; // impact
-                    jumpsNum = 0;
-                }else {
-                    velocity.y = -50; // impact
-                }
-            
-                velocity.x = 0;
-                currentBlockContact = i;
-            //break;
-        }
-        }
-    }
-    
-    for (int i = 0; i<this->gemsNum; i++) {
-        block = this->gems->getObjectAtIndex(i);
-        if (block->getIsVisible()) {
-            blockPosition = block->getPosition();
-            if (fabs(position.x - blockPosition.x) <= 16 && fabs(position.y - blockPosition.y) <= 16) {
-                block->setIsVisible(false);
+    for (int i = 0; i<this->platforms->count(); i++) {
+        entity = this->platforms->get()->getObjectAtIndex(i);
+        if (entity->node->getIsVisible()) {
+            if (entity->physics->isCollideWith(this->hero->node)) {
+                this->hero->physics->jump(-50);
             }
         }
+    }
+    
+    for (int i = 0; i<this->gems->count(); i++) {
+        entity = this->gems->get()->getObjectAtIndex(i);
+        
+        if (entity->node->getIsVisible()) {
+            if (entity->physics->isCollideWith(this->hero->node)) {
+                entity->node->setIsVisible(false);
+                this->hud->addPoints(1);
+            }
+        }
+    }
+    
+    
+    for (int i; i<this->flies->count(); i++) {
+        entity = this->flies->get()->getObjectAtIndex(i);
+    }
 
-        block->setPosition(blockPosition);
+    if (this->hero->node->getPosition().y < 16) {
+        this->hero->physics->jump(-50);
     }
     
-    for (int i = 0; i<this->enemiesNum; i++) {
-        block = this->enemies->getObjectAtIndex(i);
-        enemyPosition = block->getPosition();
-        if (enemyPosition.x > winSize.width + 16) {
-            enemyPosition.x = -16;
-        }
-        enemyPosition.x += 20*dt;
-        block->setPosition(enemyPosition);
-        
-        //collide with hero?
-        if (fabs(position.x - enemyPosition.x) <= 32 && fabs(position.y - enemyPosition.y) <= 16) {
-            CCLog("hero collide");
-        }
-        
-    }
-    
-    if (position.y <= 0) {
-        velocity.y = -50; // impact
-        velocity.x = 0;
-    }
-    
-    velocity.y -= -2.0f;
-    position.x += velocity.x*dt;
-    position.y -= velocity.y*dt;
-    
-    // add velocity boundry
-    if (velocity.y < -50) {
-        //velocity.y = -50;
-    }
-    
-    hero->setPosition(position);
+    this->flies->update(dt);
+    this->hero->physics->update(dt);
 }
 
 void HelloWorld::clean()
 {
-    delete this->gems;
-    delete this->enemies;
+    CC_SAFE_DELETE(this->hero);
+    CC_SAFE_DELETE(this->flies);
+    CC_SAFE_DELETE(this->gems);
+    CC_SAFE_DELETE(this->platforms);
 }
 
 void HelloWorld::keyBackClicked() 
