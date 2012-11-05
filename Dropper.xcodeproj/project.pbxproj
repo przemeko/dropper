@@ -29,6 +29,7 @@
 		71394882163DA413006AC9E3 /* spritesheet.png in Resources */ = {isa = PBXBuildFile; fileRef = 71394870163DA413006AC9E3 /* spritesheet.png */; };
 		71394885163DA42D006AC9E3 /* Hud.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71394883163DA42D006AC9E3 /* Hud.cpp */; };
 		7139CE511629E4810017C391 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 7139CE501629E4810017C391 /* Default.png */; };
+		71B3CFE71646C35300704FEB /* bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 71B3CFE61646C35300704FEB /* bg.jpg */; };
 		71EE98CF162374AD00099652 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71EE98CE162374AD00099652 /* QuartzCore.framework */; };
 		71EE98D1162374AD00099652 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71EE98D0162374AD00099652 /* OpenGLES.framework */; };
 		71EE98D3162374AD00099652 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71EE98D2162374AD00099652 /* OpenAL.framework */; };
@@ -150,7 +151,7 @@
 		71EE9A80162374B100099652 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71EE9A7F162374B100099652 /* AppController.mm */; };
 		71EE9A83162374B100099652 /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71EE9A82162374B100099652 /* RootViewController.mm */; };
 		71EE9A87162374B100099652 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71EE9A86162374B100099652 /* AppDelegate.cpp */; };
-		71EE9A8A162374B100099652 /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71EE9A89162374B100099652 /* HelloWorldScene.cpp */; };
+		71EE9A8A162374B100099652 /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71EE9A89162374B100099652 /* GameScene.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -181,6 +182,7 @@
 		71394883163DA42D006AC9E3 /* Hud.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hud.cpp; sourceTree = "<group>"; };
 		71394884163DA42D006AC9E3 /* Hud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hud.h; sourceTree = "<group>"; };
 		7139CE501629E4810017C391 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		71B3CFE61646C35300704FEB /* bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg.jpg; sourceTree = "<group>"; };
 		71EE98CA162374AD00099652 /* Dropper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dropper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71EE98CE162374AD00099652 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		71EE98D0162374AD00099652 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -445,8 +447,8 @@
 		71EE9A82162374B100099652 /* RootViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RootViewController.mm; path = ios/RootViewController.mm; sourceTree = "<group>"; };
 		71EE9A85162374B100099652 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
 		71EE9A86162374B100099652 /* AppDelegate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AppDelegate.cpp; path = Classes/AppDelegate.cpp; sourceTree = "<group>"; };
-		71EE9A88162374B100099652 /* HelloWorldScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HelloWorldScene.h; path = Classes/HelloWorldScene.h; sourceTree = "<group>"; };
-		71EE9A89162374B100099652 /* HelloWorldScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HelloWorldScene.cpp; path = Classes/HelloWorldScene.cpp; sourceTree = "<group>"; };
+		71EE9A88162374B100099652 /* GameScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GameScene.h; path = Classes/GameScene.h; sourceTree = "<group>"; };
+		71EE9A89162374B100099652 /* GameScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = GameScene.cpp; path = Classes/GameScene.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -530,6 +532,7 @@
 		71EE98DF162374AD00099652 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				71B3CFE61646C35300704FEB /* bg.jpg */,
 				7139485F163DA413006AC9E3 /* block2.png */,
 				71394860163DA413006AC9E3 /* CloseNormal.png */,
 				71394861163DA413006AC9E3 /* CloseSelected.png */,
@@ -1066,8 +1069,8 @@
 				71394851163DA17F006AC9E3 /* System */,
 				71EE9A85162374B100099652 /* AppDelegate.h */,
 				71EE9A86162374B100099652 /* AppDelegate.cpp */,
-				71EE9A88162374B100099652 /* HelloWorldScene.h */,
-				71EE9A89162374B100099652 /* HelloWorldScene.cpp */,
+				71EE9A88162374B100099652 /* GameScene.h */,
+				71EE9A89162374B100099652 /* GameScene.cpp */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -1140,6 +1143,7 @@
 				71394880163DA413006AC9E3 /* iTunesArtwork in Resources */,
 				71394881163DA413006AC9E3 /* spritesheet.plist in Resources */,
 				71394882163DA413006AC9E3 /* spritesheet.png in Resources */,
+				71B3CFE71646C35300704FEB /* bg.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1263,7 +1267,7 @@
 				71EE9A80162374B100099652 /* AppController.mm in Sources */,
 				71EE9A83162374B100099652 /* RootViewController.mm in Sources */,
 				71EE9A87162374B100099652 /* AppDelegate.cpp in Sources */,
-				71EE9A8A162374B100099652 /* HelloWorldScene.cpp in Sources */,
+				71EE9A8A162374B100099652 /* GameScene.cpp in Sources */,
 				71394859163DA2AD006AC9E3 /* Entity.cpp in Sources */,
 				7139485A163DA2AD006AC9E3 /* Group.cpp in Sources */,
 				7139485B163DA2AD006AC9E3 /* Physics.cpp in Sources */,
